@@ -1,64 +1,43 @@
 # 3031varun
-class DEQueue:
+class ArrayQueue:
     DEFAULT_CAPACITY = 10
 
     def __init__(self):
-        self._data = [None] * DEQueue.DEFAULT_CAPACITY
+
+        self._data = [None] * ArrayQueue.DEFAULT_CAPACITY
         self._size = 0
         self._front = 0
-        self._back = 0
 
-    def __len__(self):
+    def len(self):
+
         return self._size
 
     def is_empty(self):
+
         return self._size == 0
 
     def first(self):
+
         if self.is_empty():
-            raise Exception('Queue is empty')
+            raise Exception("Queue is empty")
         return self._data[self._front]
 
-    def last(self):
+    def dequeue(self):
+
         if self.is_empty():
-            raise Exception('Queue is empty')
-        return self._data[self._back]
+            raise Exception("Queue is empty")
+        answer = self._data[self._front]
+        self._data[self._front] = None
+        self._front = (self._front + 1) % len(self._data)
+        self._size -= 1
+        return answer
 
-    def enqueue_front(self, e):
-        if self._size == len(self._data):
-            self._resize(2 * len(self._data))
-        self._front = (self._front - 1) % len(self._data)
-        self._data[self._front] = e
-        self._size += 1
-        self._back = (self._front + self._size - 1) % len(self._data)
-
-    def enqueue_back(self, e):
+    def enqueue(self, e):
         if self._size == len(self._data):
             self._resize(2 * len(self._data))
         avail = (self._front + self._size) % len(self._data)
         self._data[avail] = e
         self._size += 1
-        self._back = (self._front + self._size - 1) % len(self._data)
-
-    def dequeue_front(self):
-        if self.is_empty():
-            raise Exception('Queue is empty')
-        answer = self._data[self._front]
-        self._data[self._front] = None
-        self._front = (self._front + 1) % len(self._data)
-        self._size -= 1
-        self._back = (self._front + self._size - 1) % len(self._data)
-        return answer
-
-    def dequeue_back(self):
-        if self.is_empty():
-            raise Exception('Queue is empty')
-        back = (self._front + self._size - 1) % len(self._data)
-        answer = self._data[back]
-        self._data[back] = None
-        self._size -= 1
-        self._back = (self._front + self._size - 1) % len(self._data)
-        return answer
 
     def _resize(self, cap):
 
@@ -69,6 +48,47 @@ class DEQueue:
             self._data[k] = old[walk]
             walk = (1 + walk) % len(old)
         self._front = 0
+
+
+class DEQueue(ArrayQueue):
+    def __init__(self):
+        ArrayQueue.__init__(self)
+        self._back = 0
+
+    def last(self):
+        if self.is_empty():
+            raise Exception('Queue is empty')
+        return self._data[self._back]
+
+    def enqueue_front(self, e):
+        self.enqueue(e)
+        self._back = (self._front + self._size - 1) % len(self._data)
+
+    def enqueue_back(self, e):
+        if self._size == len(self._data):
+            self._resize(2 * len(self._data))
+        self._front = (self._front - 1) % len(self._data)
+        self._data[self._front] = e
+        self._size += 1
+        self._back = (self._front + self._size - 1) % len(self._data)
+
+    def dequeue_front(self):
+        if self.is_empty():
+            raise Exception('Queue is empty')
+        back = (self._front + self._size - 1) % len(self._data)
+        answer = self._data[back]
+        self._data[back] = None
+        self._size -= 1
+        self._back = (self._front + self._size - 1) % len(self._data)
+        return answer
+
+    def dequeue_back(self):
+        answer = self.dequeue()
+        self._back = (self._front + self._size - 1) % len(self._data)
+        return answer
+
+    def _resize(self, cap):
+        ArrayQueue._resize(self, cap)
         self._back = (self._front + self._size - 1) % len(self._data)
 
     def show_all(self):
