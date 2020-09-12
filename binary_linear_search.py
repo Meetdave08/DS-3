@@ -4,14 +4,14 @@ class Search:
         self.ele = ele
 
     def binary(self):
-        low = 0
-        high = len(self.lst) - 1
-        while low <= high:
-            mid = (high + low) // 2
+        start = 0
+        end = len(self.lst) - 1
+        while start <= end:
+            mid = (end + start) // 2
             if self.lst[mid] < self.ele:
-                low = mid + 1
+                start = mid + 1
             elif self.lst[mid] > self.ele:
-                high = mid - 1
+                end = mid - 1
             else:
                 return mid
         return False
