@@ -50,6 +50,8 @@ class DoublyLinkedList:
     def display(self, direction="start"):
         if direction == "end":
             self.__display_backward()
+        elif direction == "start":
+            self.__display_forward()
         else:
             self.__display_forward()
 
