@@ -22,7 +22,7 @@ class DoublyLinkedList:
         return self.__size
 
     def display(self):
-        if self.__size == 0:
+        if self.is_empty():
             print("Doubly Linked List is empty")
             return
         first = self.__head
@@ -166,6 +166,53 @@ class DoublyLinkedList:
             self.__tail = linked_list_value.__tail
             self.__size = linked_list_value.__size
 
+    def reverse(self):
+        if self.is_empty():
+            print("Doubly Linked List is empty")
+            return
+        elif self.__size == 1:
+            return
+        elif self.__size == 2:
+            temp = self.__head
+            self.__head = self.__tail
+            self.__tail = temp
+            self.__head.prev = None
+            self.__head.next = self.__tail
+            self.__tail.prev = self.__head
+            self.__tail.next = None
+        elif self.__size == 3:
+            mid = self.__get_node_from_start(1)
+            temp = self.__head
+            self.__head = self.__tail
+            self.__tail = temp
+            self.__head.prev = None
+            self.__head.next = mid
+            mid.prev = self.__head
+            mid.next = self.__tail
+            self.__tail.prev = mid
+            self.__tail.next = None
+        elif self.__size > 3:
+            temp_lst = []
+            first = self.__head
+            temp_lst.append(first)
+            first = first.next
+            while first:
+                temp_lst.append(first)
+                first = first.next
+            temp_lst.reverse()
+            self.__head.prev = None
+            self.__head = temp_lst[0]
+            self.__head.next = temp_lst[1]
+            self.__tail.prev = temp_lst[len(temp_lst)-2]
+            self.__tail = temp_lst[len(temp_lst)-1]
+            self.__tail.next = None
+            for i in range(1, len(temp_lst)-1):
+                temp_lst[i].prev = temp_lst[i-1]
+                if i == len(temp_lst)-1:
+                    temp_lst[i].next = None
+                else:
+                    temp_lst[i].next = temp_lst[i+1]
+
     @staticmethod
     def test_main():
         dll = DoublyLinkedList()
@@ -233,7 +280,11 @@ class DoublyLinkedList:
         dll3.get_head().display()
         print("Tail: ", end='')
         dll3.get_tail().display()
-        print(f"Size: {dll3.get_size()}", end='')
+        print(f"Size: {dll3.get_size()}")
+        dll3.display()
+        dll3.reverse()
+        print("After Reversing")
+        dll3.display()
 
 
 if __name__ == "__main__":
