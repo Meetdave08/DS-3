@@ -24,6 +24,16 @@ class Matrix:
                 sum_m[i][j] = m_1[i][j] + m_2[i][j]
         return sum_m
 
+    def subtraction(self, m_1, m_2):
+        dim_1, dim_2, same_dim, comp_dim = self.__get_dimensions(m_1, m_2)
+        if not same_dim:
+            raise Exception("Matrices do not have the same dimensions")
+        difference_m = [[0 for cols in range(dim_1[1])] for rows in range(dim_1[0])]
+        for i in range(0, dim_1[0]):
+            for j in range(0, dim_1[1]):
+                difference_m[i][j] = m_1[i][j] - m_2[i][j]
+        return difference_m
+
     def multiplication(self, m_1, m_2):
         dim_1, dim_2, same_dim, comp_dim = self.__get_dimensions(m_1, m_2)
         if not comp_dim:
@@ -56,6 +66,7 @@ if __name__ == '__main__':
 
     matrix = Matrix()
     sum = matrix.addition(matrix_1, matrix_2)
+    difference = matrix.subtraction(matrix_1, matrix_2)
     transpose = matrix.transpose(matrix_3)
     product = matrix.multiplication(matrix_3, matrix_4)
     print('Matrix 1:')
@@ -70,5 +81,7 @@ if __name__ == '__main__':
     matrix.display(transpose)
     print('Addition of Matrix 1 & 2:')
     matrix.display(sum)
+    print('Subtraction of Matrix 1 & 2:')
+    matrix.display(difference)
     print('Multiplication of Matrix 3 & 4:')
     matrix.display(product)
