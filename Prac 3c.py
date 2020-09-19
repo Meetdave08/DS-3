@@ -330,13 +330,33 @@ if __name__ == "__main__":
     superscript_map = {"0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶",
                        "7": "⁷", "8": "⁸", "9": "⁹"}
     trans = str.maketrans(''.join(superscript_map.keys()), ''.join(superscript_map.values()))
+    addend_1 = []
+    addend_2 = []
+    addend_str_1 = ""
+    addend_str_2 = ""
     result = []
     result_str = ""
-    for i in range(order + 1):
+    for i in reversed(range(order + 1)):
+        addend_1.append(polynomial_addition_1.get_node_at(i).element)
+        addend_2.append(polynomial_addition_2.get_node_at(i).element)
         result.append(polynomial_addition_1.get_node_at(i).element + polynomial_addition_2.get_node_at(i).element)
     for ele in reversed(range(order + 1)):
+        addend_str_1 = addend_str_1 + "%+d" % (addend_1[ele]) + "x" + (str(ele).translate(trans))
+        addend_str_2 = addend_str_2 + "%+d" % (addend_2[ele]) + "x" + (str(ele).translate(trans))
         result_str = result_str + "%+d" % (result[ele]) + "x" + (str(ele).translate(trans))
+
+    addend_str_1 = addend_str_1.replace("¹", "")
+    addend_str_1 = addend_str_1.lstrip("+")
+    addend_str_1 = addend_str_1.rstrip("x⁰")
+
+    sign = addend_str_2[0]
+    addend_str_2 = addend_str_2.replace("¹", "")
+    addend_str_2 = addend_str_2.lstrip("+")
+    addend_str_2 = addend_str_2.lstrip("-")
+    addend_str_2 = addend_str_2.rstrip("x⁰")
+
     result_str = result_str.replace("¹", "")
     result_str = result_str.lstrip("+")
     result_str = result_str.rstrip("x⁰")
-    print("Sum = "+result_str)
+
+    print(addend_str_1+" "+sign+" "+addend_str_2+" = "+result_str)
